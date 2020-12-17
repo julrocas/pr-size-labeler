@@ -14537,6 +14537,7 @@ const minimatch_1 = __webpack_require__(973);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log("Running...");
             const token = core.getInput("repo-token", { required: true });
             const configPath = core.getInput("configuration-path", { required: true });
             const syncLabels = !!core.getInput("sync-labels", { required: false });
