@@ -14653,8 +14653,10 @@ function printPattern(matcher) {
     return (matcher.negate ? "!" : "") + matcher.pattern;
 }
 function checkGlobs(changedFiles, globs) {
+    console.log(`globs ${JSON.stringify(globs)}`);
     for (const glob of globs) {
         core.debug(` checking pattern ${JSON.stringify(glob)}`);
+        console.log(` checking pattern ${JSON.stringify(glob)}`);
         const matchConfig = toMatchConfig(glob);
         if (checkMatch(changedFiles, matchConfig)) {
             return true;
