@@ -1,6 +1,6 @@
-name: 'Labeler'
-description: 'Add labels to new pull requests based on the files that are changed'
-author: 'GitHub'
+name: 'PR Size Labeler'
+description: 'Add labels to new pull requests based on the size of the changes'
+author: 'GitHub & Julio Castillo'
 inputs: 
   repo-token:
     description: 'The GITHUB_TOKEN secret'

@@ -1,7 +1,7 @@
 {
-  "name": "labeler",
-  "version": "3.0.0",
-  "description": "Labels pull requests by files altered",
+  "name": "pr-size-labeler",
+  "version": "1.0.0",
+  "description": "Add labels to new pull requests based on the size of the changes",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc && ncc build lib/main.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/labeler.git"
+    "url": "git+https://github.com/julrocas/pr-size-labeler.git"
   },
   "keywords": [
     "github",
@@ -19,7 +19,7 @@
     "label",
     "labeler"
   ],
-  "author": "GitHub",
+  "author": "GitHub & Julio Castillo",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.4",
