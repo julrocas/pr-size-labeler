@@ -14562,6 +14562,7 @@ function run() {
                 core.debug(`processing ${label}`);
                 console.log(`processing ${label}`);
                 if (checkGlobs(changedFiles, globs)) {
+                    console.log('shoul add label');
                     labels.push(label);
                 }
                 else if (pullRequest.labels.find(l => l.name === label)) {
