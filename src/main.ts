@@ -12,6 +12,7 @@ type StringOrMatchConfig = string | MatchConfig;
 
 async function run() {
   try {
+    console.log("Running...");
     const token = core.getInput("repo-token", { required: true });
     const configPath = core.getInput("configuration-path", { required: true });
     const syncLabels = !!core.getInput("sync-labels", { required: false });
