@@ -14553,12 +14553,14 @@ function run() {
                 pull_number: prNumber
             });
             core.debug(`fetching changed files for pr #${prNumber}`);
+            console.log(`fetching changed files for pr #${prNumber}`);
             const changedFiles = yield getChangedFiles(client, prNumber);
             const labelGlobs = yield getLabelGlobs(client, configPath);
             const labels = [];
             const labelsToRemove = [];
             for (const [label, globs] of labelGlobs.entries()) {
                 core.debug(`processing ${label}`);
+                console.log(`processing ${label}`);
                 if (checkGlobs(changedFiles, globs)) {
                     labels.push(label);
                 }
@@ -14598,6 +14600,7 @@ function getChangedFiles(client, prNumber) {
         core.debug("found changed files:");
         for (const file of changedFiles) {
             core.debug("  " + file);
+            console.log("  " + file);
         }
         return changedFiles;
     });
