@@ -25,10 +25,13 @@ async function run() {
 
     const changesSize = pullRequest.additions + pullRequest.deletions;
 
+    console.log(`changesSize ${changesSize}`);
+
     const labels: string[] = [];
     const labelsToRemove: string[] = [];
     for (let label of labelsConfig) {
       core.debug(`processing ${label}`);
+      console.log(`processing ${label}`);
       if ((changesSize > label.lower_limit) && (changesSize < label.upper_limit)){
         labels.push(label.name);
       } else if (pullRequest.labels.find(l => l.name === label.name)) {
