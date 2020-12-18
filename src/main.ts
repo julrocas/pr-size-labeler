@@ -19,9 +19,9 @@ async function run() {
       pull_number: prNumber
     });
 
-    const labelsConfig = [{name: 'Small Change', lower_limit: 0, upper_limit: 100},
-                          {name: 'Medium Change', lower_limit: 101, upper_limit: 200},
-                          {name: 'Big Change', lower_limit: 201, upper_limit: Infinity}];
+    const labelsConfig = [{name: 'Small Change', lower_limit: 0, upper_limit: 10},
+                          {name: 'Medium Change', lower_limit: 11, upper_limit: 30},
+                          {name: 'Big Change', lower_limit: 31, upper_limit: Infinity}];
 
     const changesSize = pullRequest.additions + pullRequest.deletions;
 
