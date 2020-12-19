@@ -107,9 +107,12 @@ function getLabelLimitMapFromObject(
       }
       last_limit = configObject[label];
       labelLimits.set(label, configObject[label]);
+    } else if ((typeof configObject[label] === "string") && (configObject[label] === "Infinity")) {
+      last_limit = Infinity;
+      labelLimits.set(label, Infinity);
     } else {
       throw Error(
-        `found unexpected type for label ${label} (should be number)`
+        `found unexpected type for label ${label} (should be a number or Infinity)`
       );
     }
   }
