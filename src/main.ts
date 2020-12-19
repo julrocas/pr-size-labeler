@@ -1,9 +1,11 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import * as yaml from "js-yaml";
 
 async function run() {
   try {
     const token = core.getInput("repo-token", { required: true });
+    const configPath = core.getInput("configuration-path", { required: true });
 
     const prNumber = getPrNumber();
     if (!prNumber) {
@@ -19,23 +21,23 @@ async function run() {
       pull_number: prNumber
     });
 
-    const labelsConfig = [{name: 'Small Change', lower_limit: 0, upper_limit: 10},
-                          {name: 'Medium Change', lower_limit: 11, upper_limit: 30},
-                          {name: 'Big Change', lower_limit: 31, upper_limit: Infinity}];
+    const labelLimits: Map<string, number> = await getLabelLimits(
+      client,
+      configPath
+    );
 
     const changesSize = pullRequest.additions + pullRequest.deletions;
-
-    console.log(`changesSize ${changesSize}`);
-
     const labels: string[] = [];
     const labelsToRemove: string[] = [];
-    for (let label of labelsConfig) {
+    let found = false;
+
+    for (const [label, limit] of labelLimits.entries()) {
       core.debug(`processing ${label}`);
-      console.log(`processing ${label}`);
-      if ((changesSize > label.lower_limit) && (changesSize < label.upper_limit)){
-        labels.push(label.name);
-      } else if (pullRequest.labels.find(l => l.name === label.name)) {
-        labelsToRemove.push(label.name);
+      if ((!found) && (changesSize < limit)){
+        found = true;
+        labels.push(label);
+      } else if (pullRequest.labels.find(l => l.name === label)) {
+        labelsToRemove.push(label);
       }
     }
 
@@ -59,6 +61,60 @@ function getPrNumber(): number | undefined {
   }
 
   return pullRequest.number;
+}
+
+async function getLabelLimits(
+  client: github.GitHub,
+  configurationPath: string
+): Promise<Map<string, number>> {
+  const configurationContent: string = await fetchContent(
+    client,
+    configurationPath
+  );
+
+  // loads (hopefully) a `{[label:string]: string | StringOrMatchConfig[]}`, but is `any`:
+  const configObject: any = yaml.safeLoad(configurationContent);
+
+  // transform `any` => `Map<string,StringOrMatchConfig[]>` or throw if yaml is malformed:
+  return getLabelLimitMapFromObject(configObject);
+}
+
+async function fetchContent(
+  client: github.GitHub,
+  repoPath: string
+): Promise<string> {
+  const response: any = await client.repos.getContents({
+    owner: github.context.repo.owner,
+    repo: github.context.repo.repo,
+    path: repoPath,
+    ref: github.context.sha
+  });
+
+  return Buffer.from(response.data.content, response.data.encoding).toString();
+}
+
+function getLabelLimitMapFromObject(
+  configObject: any
+): Map<string, number> {
+  const labelLimits: Map<string, number> = new Map();
+  let last_limit = 0;
+  for (const label in configObject) {
+    if (typeof configObject[label] === "number") {
+      if (last_limit >= configObject[label]) {
+        throw Error(
+          `found invalid limit for label ${label} (upper limit value should be greater than the last one and zero)`
+        );
+      }
+      last_limit = configObject[label];
+      labelLimits.set(label, configObject[label]);
+    } else {
+      throw Error(
+        `found unexpected type for label ${label} (should be number)`
+      );
+    }
+  }
+
+  return labelLimits;
 }
 
 async function addLabels(

@@ -1,6 +1,6 @@
-# Pull Request Labeler
+# Pull Request Size Labeler
 
-Pull request labeler triages PRs based on the paths that are modified in the PR.
+Pull request size labeler triages PRs based on the size of the changes in the PR.
 
 ## Usage
 
