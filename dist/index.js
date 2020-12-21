@@ -14556,7 +14556,7 @@ function run() {
             let found = false;
             for (const [label, limit] of labelLimits.entries()) {
                 core.debug(`processing ${label}`);
-                if ((!found) && (changesSize < limit)) {
+                if ((!found) && (changesSize <= limit)) {
                     found = true;
                     labels.push(label);
                 }
