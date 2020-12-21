@@ -6,7 +6,7 @@ Pull request size labeler triages PRs based on the size of the changes in the PR
 
 ### Create `.github/pr-size-labeler.yml`
 
-Create a `.github/pr-size-labeler.yml` file with a list of labels and the size of changes this label has as an upper limit.
+Create a `.github/pr-size-labeler.yml` file with a list of labels and the size of changes this label has as upper limit.
 
 The key is the name of the label in your repository that you want to add (eg: "Small Change", "Big Change") and the value is the upper limit of changes for that label (10, 20, Infinity). The labels must be in ascending order basend on the limit value.
 
@@ -17,9 +17,6 @@ The key is the name of the label in your repository that you want to add (eg: "S
 'Medium Change': 5
 'Big Change': 10
 'Huge Change': Infinity
-
-# Add 'label2' to any file changes within 'example2' folder
-label2: example2/*
 ```
 
 ### Create Workflow
@@ -43,7 +40,7 @@ _Note: This grants access to the `GITHUB_TOKEN` so the action can make calls to 
 
 #### Inputs
 
-Various inputs are defined in [`action.yml`](action.yml) to let you configure the labeler:
+Two inputs are defined in [`action.yml`](action.yml) to let you configure the labeler:
 
 | Name | Description | Default |
 | - | - | - |
