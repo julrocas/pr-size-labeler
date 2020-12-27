@@ -1,6 +1,6 @@
 # Pull Request Size Labeler
 
-Pull request size labeler triages PRs based on the size of the changes in the PR.
+Pull request size labeler triages PRs based on the size of the changes in the PR. Based on: https://github.com/actions/labeler
 
 ## Usage
 
